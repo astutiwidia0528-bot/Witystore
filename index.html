@@ -173,7 +173,15 @@ header::before {
 <h2>Katalog Produk ✨</h2>
 <input id="cari" placeholder="Cari aplikasi premium...">
 <div id="produk">Memuat produk...</div>
-</main>
+<section id="testimoni" style="margin-top:30px;">
+  <h2>💗 Testimoni Pelanggan</h2>
+  <p style="color:#984da8;">
+    Terima kasih sudah percaya Witystore 🎀
+  </p>
+  <div id="daftarTestimoni">
+    Memuat testimoni...
+  </div>
+</section></main>
 <footer>© Witystore | Aplikasi Premium</footer>
 <script>
 const url = "https://fbrvxonpoqvijrwhjmnt.supabase.co";
@@ -275,5 +283,67 @@ async function muat(){
 document.getElementById("cari").addEventListener("input",tampilkan);
 muat();
 </script>
-</body>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const client = createClient(
+  "https://c--b2d4fb4f-ab0e-4dde-9f9f-b4d44ffc6b60-prod.lovable.cloud",
+  "sb_publishable_ycXrtMkHJWPdXk5dZ_ufjw_-pkioIIM"
+);
+
+const daftar = document.getElementById("daftarTestimoni");
+
+async function muatTestimoni() {
+  try {
+    const { data, error } = await client
+      .from("testimonials")
+      .select("username,rating,content,photo_url")
+      .eq("status", "approved")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    daftar.replaceChildren();
+
+    if (!data.length) {
+      daftar.textContent = "Belum ada testimoni.";
+      return;
+    }
+
+    for (const t of data) {
+      const kotak = document.createElement("div");
+      kotak.style.cssText = "background:white;border:2px solid #e8c5ff;border-radius:20px;padding:15px;margin-bottom:12px;color:#803ab0;overflow-wrap:anywhere;";
+
+      const nama = document.createElement("strong");
+      nama.textContent = t.username;
+
+      const bintang = document.createElement("p");
+      bintang.textContent = "⭐".repeat(Math.max(0, Math.min(5, Number(t.rating) || 0)));
+
+      const ulasan = document.createElement("p");
+      ulasan.textContent = t.content;
+
+      kotak.append(nama, bintang, ulasan);
+      daftar.append(kotak);
+
+      if (t.photo_url) {
+        const { data: foto } = await client.storage
+          .from("testimonial-photos")
+          .createSignedUrl(t.photo_url, 3600);
+
+        if (foto?.signedUrl) {
+          const img = document.createElement("img");
+          img.src = foto.signedUrl;
+          img.style.cssText = "width:100%;max-width:250px;border-radius:12px;";
+          kotak.append(img);
+        }
+      }
+    }
+  } catch (e) {
+    daftar.textContent = "Gagal memuat testimoni.";
+  }
+}
+
+muatTestimoni();
+</script></body>
 </html>
