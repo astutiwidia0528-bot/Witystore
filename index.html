@@ -110,26 +110,34 @@ header::before {
     linear-gradient(135deg,#ffe4f3,#eee0ff);
   background-repeat: repeat;
   background-attachment: fixed;}
-.bubbleKategori {
+.menuKategori {
   grid-column: 1 / -1;
-  width: 100%;
   display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px;
-  background: #ffd4eb;
-  border: 3px solid white;
-  border-radius: 25px;
-  color: #984da8;
-  font-size: 18px;
-  font-weight: bold;
-  box-shadow: 0 4px 10px #dfb5ec;
-  cursor: pointer;
-  text-align: left;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-.bubbleKategori:nth-child(4n + 3) {
+.bubbleKategori {
+  width: auto;
+  padding: 8px 12px;
+  background: #ffd4eb;
+  border: 1px solid white;
+  border-radius: 30px;
+  color: #803ab0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 5px #dfb5ec;
+}
+
+.bubbleKategori:nth-child(even) {
   background: #e8d5ff;
+}
+
+.bubbleKategori.aktif {
+  background: #a65cda;
+  color: white;
 }
 
 .chibiKategori {
@@ -185,6 +193,9 @@ hasil.forEach(p => {
   if (!kategori[k]) kategori[k] = [];
   kategori[k].push(p);
 });
+const menuKategori = document.createElement("div");
+menuKategori.className = "menuKategori";
+katalog.append(menuKategori);
 
 Object.keys(kategori).sort((a,b) =>
   b.localeCompare(a)
@@ -192,29 +203,33 @@ Object.keys(kategori).sort((a,b) =>
  const judul = document.createElement("button");
 judul.className = "bubbleKategori";
 
-const chibi = document.createElement("img");
-chibi.src = "chibi.png";
-chibi.className = "chibiKategori";
-chibi.alt = "";
-
-const teks = document.createElement("span");
-teks.textContent = k;
-
-const panah = document.createElement("span");
-panah.textContent = "♡";
-
-judul.append(chibi, teks, panah);
+judul.textContent = k;
+judul.type = "button";
 
 const isiKategori = document.createElement("div");
 isiKategori.className = "isiKategori";
 isiKategori.hidden = !cari;
 
+judul.classList.toggle("aktif", !isiKategori.hidden);
+
 judul.onclick = () => {
-  isiKategori.hidden = !isiKategori.hidden;
-  panah.textContent = isiKategori.hidden ? "♡" : "⌄";
+  const buka = isiKategori.hidden;
+
+  katalog.querySelectorAll(".isiKategori").forEach(el => {
+    el.hidden = true;
+  });
+
+  menuKategori.querySelectorAll(".bubbleKategori").forEach(el => {
+    el.classList.remove("aktif");
+  });
+
+  isiKategori.hidden = !buka;
+  judul.classList.toggle("aktif", buka);
 };
 
-katalog.append(judul, isiKategori);
+menuKategori.append(judul);
+katalog.append(isiKategori);
+
   kategori[k].forEach(p => {
  
     const card = document.createElement("article");
