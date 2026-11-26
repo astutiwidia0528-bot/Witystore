@@ -161,7 +161,42 @@ header::before {
 
 .isiKategori[hidden] {
   display: none !important;
-}</style>
+}}
+
+#daftarTestimoni {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 5px 0 12px;
+}
+
+#daftarTestimoni > div {
+  flex: 0 0 170px;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  font-size: 12px;
+  padding: 12px !important;
+  margin-bottom: 0 !important;
+}
+
+#daftarTestimoni img {
+  width: 100% !important;
+  height: 110px !important;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+#daftarTestimoni::-webkit-scrollbar {
+  height: 5px;
+}
+
+#daftarTestimoni::-webkit-scrollbar-thumb {
+  background: #d6a4ed;
+  border-radius: 20px;
+}
+
+</style>
 </head>
 <body>
 <header style="padding:0;overflow:hidden;">
