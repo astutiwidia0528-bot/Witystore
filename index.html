@@ -196,7 +196,11 @@ hasil.forEach(p => {
 const menuKategori = document.createElement("div");
 menuKategori.className = "menuKategori";
 katalog.append(menuKategori);
-
+const petunjuk = document.createElement("p");
+petunjuk.textContent = "🎀 Silakan pilih kategori aplikasi 🎀";
+petunjuk.style.cssText = "grid-column:1/-1;text-align:center;color:#984da8;font-size:13px;";
+petunjuk.hidden = !!cari;
+katalog.append(petunjuk);
 Object.keys(kategori).sort((a,b) =>
   b.localeCompare(a)
 ).forEach(k => {
@@ -225,7 +229,7 @@ judul.onclick = () => {
 
   isiKategori.hidden = !buka;
   judul.classList.toggle("aktif", buka);
-};
+petunjuk.hidden = buka || !!cari;};
 
 menuKategori.append(judul);
 katalog.append(isiKategori);
