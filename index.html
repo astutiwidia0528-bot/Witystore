@@ -78,7 +78,23 @@ function tampilkan(){
   const hasil = data.filter(p =>
     String(p.nama_produk || p.name || "").toLowerCase().includes(cari)
   );
-  hasil.forEach(p => {
+  const kategori = {};
+hasil.forEach(p => {
+  const k = p.kategori || "Lainnya";
+  if (!kategori[k]) kategori[k] = [];
+  kategori[k].push(p);
+});
+
+Object.keys(kategori).sort((a,b) =>
+  b.localeCompare(a)
+).forEach(k => {
+  const judul = document.createElement("h2");
+  judul.textContent = k;
+  judul.style.gridColumn = "1 / -1";
+  katalog.append(judul);
+
+  kategori[k].forEach(p => {
+ 
     const card = document.createElement("article");
     card.className = "card";
     const img = document.createElement("img");
@@ -100,7 +116,7 @@ wa.style.cssText = "display:block;background:#25D366;color:white;padding:12px;bo
 card.append(img,nama,harga,deskripsi,wa);
     katalog.append(card);
   });
-  if(!hasil.length) katalog.textContent = "Produk belum tersedia.";
+});if(!hasil.length) katalog.textContent = "Produk belum tersedia.";
 }
 
 async function muat(){
