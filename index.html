@@ -301,8 +301,12 @@ katalog.append(isiKategori);
     img.src = p.gambar_produk || "";
     img.alt = p.nama_produk || p.name;
     const nama = document.createElement("h3");
-    nama.textContent = (p.nama_produk || p.name || "").replace(/\s*\(([^)]+)\)$/, "\n($1)");
-nama.style.whiteSpace = "pre-line";
+    const teksNama = (p.nama_produk || p.name || "").trim();
+const bagian = teksNama.match(/^(.*?)\s*(\([^)]+\))$/);
+nama.textContent = bagian ? bagian[1] : teksNama;
+if (bagian) {
+  nama.append(document.createElement("br"), bagian[2]);
+}
     const harga = document.createElement("div");
     harga.className = "harga";
     harga.textContent = "Rp" + Number(p.harga).toLocaleString("id-ID");
