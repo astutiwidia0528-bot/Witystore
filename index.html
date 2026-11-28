@@ -1125,7 +1125,29 @@ function wityMulai(){
   font-family: 'Fredoka', sans-serif;
   overflow-y: auto;
 }
+#wityPopupHeader button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50% !important;
+  background: #ead5fa !important;
+  color: #995bb2 !important;
+  font-size: 22px !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+}
 
+#wityPopupHeader button:focus-visible {
+  outline: 2px solid #b58ae6;
+  outline-offset: 2px;
+}
+
+#wityPopupHeader button:active {
+  transform: scale(.9);
+}
 #wityPopupProduk[open] {
   animation: wityMuncul .3s ease;
 }
