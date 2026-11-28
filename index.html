@@ -1420,5 +1420,181 @@ async function muatPromo(){
   }
 }
 </script>
+  <style>
+.timerPromo {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 6px 0 12px;
+}
+
+.timerPromo span {
+  background: #ead9f8;
+  color: #9455b0;
+  padding: 4px 7px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.judulTimerPromo {
+  font-size: 11px;
+  color: #94649f;
+  margin: 5px 0;
+}
+
+.diskonPromo {
+  display: inline-block;
+  background: #ead5fa;
+  color: #a14eb7;
+  border-radius: 20px;
+  padding: 6px 10px;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.menuBawah button.promoAktif {
+  position: relative;
+}
+
+.menuBawah button.promoAktif::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 62%;
+  width: 9px;
+  height: 9px;
+  background: #ff4545;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+</style>
+
+<script>
+let waktuPromoAktif = [];
+
+const muatPromoAsli = muatPromo;
+
+muatPromo = async function(){
+  await muatPromoAsli();
+
+  document.querySelectorAll(".kartuPromo").forEach(kartu => {
+    const normal = kartu.querySelector(".hargaNormalPromo");
+    const harga = kartu.querySelector(".hargaDiskonPromo");
+    const label = kartu.querySelector(".labelPromo");
+
+    if(normal && harga && label){
+      const awal = Number(normal.textContent.replace(/\D/g,""));
+      const akhir = Number(harga.textContent.replace(/\D/g,""));
+
+      if(awal > akhir && akhir > 0){
+        const diskon = document.createElement("span");
+        diskon.className = "diskonPromo";
+        diskon.textContent = "-" +
+          Math.round((awal-akhir)/awal*100) + "%";
+        label.after(diskon);
+      }
+    }
+  });
+
+  await cekPromoAktif(true);
+};
+
+async function cekPromoAktif(pasangTimer = false){
+  try {
+    const respon = await fetch(
+      url + "/rest/v1/promo?select=*&aktif=eq.true&order=created_at.desc",
+      {headers:{apikey:key}}
+    );
+
+    if(!respon.ok) return;
+
+    const semua = await respon.json();
+
+    const promo = semua.filter(p =>
+      !p.tanggal_berakhir ||
+      new Date(p.tanggal_berakhir) > new Date()
+    );
+
+    waktuPromoAktif = promo.map(p =>
+      p.tanggal_berakhir
+        ? new Date(p.tanggal_berakhir).getTime()
+        : Infinity
+    );
+
+    const menu = document.querySelector(
+      '.menuBawah button[onclick*="halamanPromo"]'
+    );
+
+    if(menu){
+      menu.classList.toggle("promoAktif", promo.length > 0);
+    }
+
+    if(pasangTimer){
+      const kartu = document.querySelectorAll(".kartuPromo");
+
+      kartu.forEach((el,i) => {
+        const p = promo[i];
+        if(!p || !p.tanggal_berakhir) return;
+
+        const judul = document.createElement("div");
+        judul.className = "judulTimerPromo";
+        judul.textContent = "⏳ Promo berakhir dalam";
+
+        const timer = document.createElement("div");
+        timer.className = "timerPromo";
+        timer.dataset.akhir = new Date(p.tanggal_berakhir).getTime();
+
+        const order = el.querySelector(".orderPromo");
+
+        if(order){
+          order.before(judul,timer);
+        }
+      });
+      updateTimerPromo();
+    }
+  }catch(e){
+    console.log("Gagal cek promo",e);
+  }
+}
+
+function updateTimerPromo(){
+  document.querySelectorAll(".timerPromo").forEach(timer => {
+    const sisa = Number(timer.dataset.akhir) - Date.now();
+
+    if(sisa <= 0){
+      timer.closest(".kartuPromo").remove();
+      return;
+    }
+
+    const total = Math.floor(sisa/1000);
+    const hari = Math.floor(total/86400);
+    const jam = Math.floor(total%86400/3600);
+    const menit = Math.floor(total%3600/60);
+    const detik = total%60;
+
+    const angka = n => String(n).padStart(2,"0");
+
+    timer.innerHTML =
+      "<span>"+angka(hari)+"h</span>"+
+      "<span>"+angka(jam)+"j</span>"+
+      "<span>"+angka(menit)+"m</span>"+
+      "<span>"+angka(detik)+"d</span>";
+  });
+
+  const menu = document.querySelector(
+    '.menuBawah button[onclick*="halamanPromo"]'
+  );
+
+  if(menu){
+    menu.classList.toggle("promoAktif",
+      waktuPromoAktif.some(t => t > Date.now()));
+  }
+}
+
+cekPromoAktif();
+setInterval(updateTimerPromo,1000);
+setInterval(cekPromoAktif,60000);
+</script>
 </body>
 </html>
