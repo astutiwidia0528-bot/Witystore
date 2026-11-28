@@ -904,19 +904,8 @@ isiKategori.hidden = !cari;
 judul.classList.toggle("aktif", !isiKategori.hidden);
 
 judul.onclick = () => {
-  const buka = isiKategori.hidden;
-
-  katalog.querySelectorAll(".isiKategori").forEach(el => {
-    el.hidden = true;
-  });
-
-  menuKategori.querySelectorAll(".bubbleKategori").forEach(el => {
-    el.classList.remove("aktif");
-  });
-
-  isiKategori.hidden = !buka;
-  judul.classList.toggle("aktif", buka);
-petunjuk.hidden = buka || !!cari;};
+  bukaPopupProduk(k, isiKategori);
+};
 
 menuKategori.append(judul);
 katalog.append(isiKategori);
@@ -1120,6 +1109,97 @@ function wityMulai(){
   if(katalog){
     katalog.scrollIntoView({behavior:'smooth'});
   }
+} 
+</script>
+  <style>
+#wityPopupProduk {
+  width: 92%;
+  max-width: 550px;
+  max-height: 85vh;
+  padding: 14px;
+  box-sizing: border-box;
+  border: 2px solid #edc5e9;
+  border-radius: 25px;
+  background: #fff0fa;
+  color: #94649f;
+  font-family: 'Fredoka', sans-serif;
+  overflow-y: auto;
+}
+
+#wityPopupProduk[open] {
+  animation: wityMuncul .3s ease;
+}
+
+#wityPopupProduk::backdrop {
+  background: rgba(45,20,55,.45);
+  backdrop-filter: blur(3px);
+}
+
+#wityPopupHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff0fa;
+  padding: 10px 0;
+  text-align: center;
+}
+
+#wityIsiProduk {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+#wityIsiProduk .card {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+</style>
+
+<dialog id="wityPopupProduk">
+
+<div id="wityPopupHeader">
+
+<button type="button" onclick="document.getElementById('wityPopupProduk').close()" style="position:absolute;right:0;top:0;border:none;background:none;color:#ad75bd;font-size:26px;">
+×
+</button>
+
+<h2 id="wityJudulProduk" style="color:#a45bb8;margin:10px 25px;"></h2>
+
+<p style="font-size:12px;">
+Pilih aplikasi sesuai kebutuhanmu 🎀
+</p>
+
+</div>
+
+<div id="wityIsiProduk"></div>
+
+<button type="button" onclick="document.getElementById('wityPopupProduk').close()" style="width:100%;margin-top:15px;padding:12px;border:none;border-radius:20px;background:#ead5fa;color:#9456af;font-weight:bold;">
+Kembali ke pilihan aplikasi
+</button>
+
+</dialog>
+
+<script>
+function bukaPopupProduk(nama, isi){
+  const popup = document.getElementById('wityPopupProduk');
+  const tempat = document.getElementById('wityIsiProduk');
+
+  document.getElementById('wityJudulProduk').textContent = nama;
+
+  tempat.replaceChildren();
+
+  isi.querySelectorAll('.card').forEach(card => {
+    tempat.appendChild(card.cloneNode(true));
+  });
+
+  if(!popup.open){
+    popup.showModal();
+  }
+
+  popup.scrollTop = 0;
 }
 </script>
 </body>
