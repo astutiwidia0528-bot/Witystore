@@ -527,6 +527,28 @@ body {
 #home .boxHome p {
   margin: 2px 0 !important;
   line-height: 1.2 !important;
+}#home .boxHome:has(img[alt="Mandiri"]) > div {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start !important;
+  gap: 10px !important;
+}
+
+#home .boxHome:has(img[alt="Mandiri"]) img,
+#home .boxHome:has(img[alt="Mandiri"]) div[style*="width:60px"] {
+  width: 45px !important;
+  height: 45px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4px !important;
+}
+
+#home .boxHome small {
+  display: block;
+  font-size: 10px !important;
+  margin-top: 2px;
+  text-align: center;
 }
 </style>
 </head>
