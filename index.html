@@ -922,7 +922,7 @@ judul.onclick = () => {
 menuKategori.append(judul);
 katalog.append(isiKategori);
 
-  kategori[k].forEach(p => {
+  kategori[k].sort((a, b) => Number(a.harga) - Number(b.harga)).forEach(p => {
  
     const card = document.createElement("article");
     card.className = "card";
