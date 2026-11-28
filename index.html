@@ -947,7 +947,7 @@ wa.target = "_blank";
 wa.rel = "noopener noreferrer";
 wa.style.cssText = "display:block;background:#25D366;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;margin-top:12px;";
 const durasi = document.createElement("div");
-const paket = teksNama.match(/\(([^()]*)\)\s*$/);
+const paket = teksNama.match(/\(?(\d+\s*(?:hari|minggu|bulan|tahun))\)?\s*$/i);
 
 nama.textContent = paket
   ? teksNama.slice(0, paket.index).trim()
