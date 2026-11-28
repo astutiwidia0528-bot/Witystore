@@ -343,6 +343,81 @@ header::before {
 
 body {
   padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}#home h2 {
+  font-size: 21px !important;
+  margin: 15px 0 10px;
+}
+
+#home p {
+  font-size: 13px !important;
+  line-height: 1.5;
+}
+
+.promoHome {
+  background: linear-gradient(135deg,#f8c9ef,#d8a6fa);
+  border: 2px solid white;
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 4px 10px #d8a6fa80;
+}
+
+.promoHome b {
+  display: inline-block;
+  background: #fff0a6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.promoHome h2 {
+  font-size: 26px !important;
+  color: #8126ae;
+}
+
+.boxHome {
+  border: 2px solid #e4b5fa;
+  border-radius: 20px;
+  background: #fff5fc;
+  box-shadow: 0 3px 8px #d8a6fa50;
+}
+
+.boxHome h3 {
+  background: linear-gradient(90deg,#b96ce5,#9439c5);
+  color: white !important;
+  border-radius: 20px;
+  padding: 7px 15px;
+  display: inline-block;
+}#aplikasiPopuler {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin: 12px 0 20px;
+}
+
+.populerItem {
+  background: #fff5fc;
+  border: 2px solid #e4b5fa;
+  border-radius: 15px;
+  padding: 8px 2px;
+  text-align: center;
+  box-shadow: 0 3px 5px #d8a6fa60;
+  cursor: pointer;
+}
+
+.populerItem img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto 5px;
+}
+
+.populerItem span {
+  display: block;
+  font-size: 10px !important;
+  font-weight: 600;
+  color: #8126ae;
 }
 </style>
 </head>
@@ -363,7 +438,32 @@ body {
   </div>
 
   <h2>Aplikasi Populer</h2>
-  <div id="aplikasiPopuler"></div>
+<div id="aplikasiPopuler">
+  <div class="populerItem" onclick="bukaHalaman('halamanKatalog')">
+    <img src="https://www.google.com/s2/favicons?domain=netflix.com&sz=128" alt="Netflix">
+    <span>Netflix</span>
+  </div>
+
+  <div class="populerItem" onclick="bukaHalaman('halamanKatalog')">
+    <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=128" alt="YouTube">
+    <span>YouTube</span>
+  </div>
+
+  <div class="populerItem" onclick="bukaHalaman('halamanKatalog')">
+    <img src="https://www.google.com/s2/favicons?domain=canva.com&sz=128" alt="Canva">
+    <span>Canva</span>
+  </div>
+
+  <div class="populerItem" onclick="bukaHalaman('halamanKatalog')">
+    <img src="https://www.google.com/s2/favicons?domain=capcut.com&sz=128" alt="CapCut">
+    <span>CapCut</span>
+  </div>
+
+  <div class="populerItem" onclick="bukaHalaman('halamanKatalog')">
+    <img src="https://www.google.com/s2/favicons?domain=viu.com&sz=128" alt="Viu">
+    <span>Viu</span>
+  </div>
+</div>
 
   <div class="boxHome">
     <h3>Kenapa Witystore?</h3>
