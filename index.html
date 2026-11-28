@@ -5,7 +5,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Witystore</title>
-<style>
+<style>@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap');
+
+.menuKategori {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+  width: 100%;
+}
+
+.bubbleKategori {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 7px 2px !important;
+  border-radius: 12px !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  min-width: 0;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.logoKategori {
+  width: 30px !important;
+  height: 30px !important;
+  object-fit: contain;
+  border-radius: 7px;
+}
 *{box-sizing:border-box}
 body{margin:0;background:#fff9df;font-family:Arial,sans-serif;color:#493510}
 header{background:#ffda45;padding:35px 15px;text-align:center;border-radius:0 0 35px 35px}
@@ -266,7 +296,15 @@ Object.keys(kategori).sort((a,b) =>
  const judul = document.createElement("button");
 judul.className = "bubbleKategori";
 
-judul.textContent = k;
+const logo = document.createElement("img");
+logo.src = kategori[k][0].gambar_produk || "";
+logo.alt = k;
+logo.className = "logoKategori";
+
+const label = document.createElement("span");
+label.textContent = k;
+
+judul.append(logo, label);
 judul.type = "button";
 
 const isiKategori = document.createElement("div");
