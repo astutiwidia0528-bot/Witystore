@@ -946,7 +946,22 @@ wa.href = "https://wa.me/62895329351557?text=" + encodeURIComponent("Halo kak, s
 wa.target = "_blank";
 wa.rel = "noopener noreferrer";
 wa.style.cssText = "display:block;background:#25D366;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;margin-top:12px;";
-card.append(img,nama,harga,deskripsi,wa);
+const durasi = document.createElement("div");
+const paket = teksNama.match(/\(([^()]*)\)\s*$/);
+
+nama.textContent = paket
+  ? teksNama.slice(0, paket.index).trim()
+  : teksNama;
+
+durasi.textContent = paket ? paket[1] : "";
+durasi.style.cssText = "background:#eddbfa;border-radius:20px;padding:6px;color:#873bb0;font-size:12px;text-align:center;margin:5px 0;";
+
+card.style.textAlign = "center";
+wa.textContent = "🛍️ Order";
+
+card.append(img,nama);
+if (paket) card.append(durasi);
+card.append(harga,deskripsi,wa);
     isiKategori.append(card);
   });
 });if(!hasil.length) katalog.textContent = "Produk belum tersedia.";
