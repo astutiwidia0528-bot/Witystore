@@ -834,7 +834,20 @@ body {
   font-size: 12px !important;
 }
 </style>
-</section></main><nav class="menuBawah">
+</section>
+
+<section id="halamanPromo" hidden>
+  <h2 style="text-align:center;">
+    🎁 Promo Spesial Witystore
+  </h2>
+  <p style="text-align:center;">
+    Belanja lebih hemat dengan promo terbatas! 💗
+  </p>
+  <div id="daftarPromo"></div>
+</section>
+
+</main>
+<nav class="menuBawah">
   <button onclick="bukaHalaman('home')">
     🏠<span>Home</span>
   </button>
@@ -844,9 +857,9 @@ body {
   <button onclick="bukaHalaman('testimoni')">
     💗<span>Testimoni</span>
   </button>
-  <a href="https://wa.me/62895329351557">
-    💬<span>Chat Admin</span>
-  </a>
+ <button onclick="bukaHalaman('halamanPromo')">
+  🎁<span>Promo</span>
+</button>
 </nav>
 <footer>© Witystore | Aplikasi Premium</footer>
 <script>
@@ -855,9 +868,14 @@ const key = "sb_publishable_3xHe531NObIFctWC9L5ERg_hkarVUCy";
 let data = [];
 const katalog = document.getElementById("produk");
 function bukaHalaman(id) {
-  ["home", "halamanKatalog", "testimoni"].forEach(nama => {
+  ["home", "halamanKatalog", "testimoni", "halamanPromo"].forEach(nama => {
     document.getElementById(nama).hidden = nama !== id;
   });
+
+  if (id === "halamanPromo") {
+    muatPromo();
+  }
+
   window.scrollTo(0, 0);
 }
 function tampilkan(){
@@ -1222,6 +1240,184 @@ function bukaPopupProduk(nama, isi){
   }
 
   popup.scrollTop = 0;
+}
+</script>
+  <style>
+#halamanPromo[hidden] {
+  display: none !important;
+}
+
+#halamanPromo {
+  padding: 12px;
+  color: #94649f;
+  font-family: 'Fredoka', sans-serif;
+}
+
+#daftarPromo {
+  display: grid;
+  gap: 15px;
+}
+
+.kartuPromo {
+  background: #fff8fd;
+  border: 2px solid #e5c2f8;
+  border-radius: 24px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 5px 12px #d8a6fa60;
+}
+
+.kartuPromo img {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 10px;
+}
+
+.kartuPromo h3 {
+  color: #a45bb8;
+  margin: 10px 0;
+}
+
+.labelPromo {
+  display: inline-block;
+  background: #ffd9ed;
+  color: #c34c91;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-size: 12px;
+}
+
+.hargaNormalPromo {
+  text-decoration: line-through;
+  color: #ac9aaf;
+  font-size: 14px;
+}
+
+.hargaDiskonPromo {
+  color: #d54d9c;
+  font-size: 25px;
+  font-weight: bold;
+  margin: 6px 0;
+}
+
+.orderPromo {
+  display: block;
+  background: linear-gradient(90deg,#ed85ba,#ad7de3);
+  color: white;
+  padding: 12px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 12px;
+}
+</style>
+
+<script>
+async function muatPromo(){
+  const daftar = document.getElementById("daftarPromo");
+  daftar.textContent = "Memuat promo...";
+
+  try {
+    const respon = await fetch(
+      url + "/rest/v1/promo?select=*&aktif=eq.true&order=created_at.desc",
+      {
+        headers: {
+          apikey: key
+        }
+      }
+    );
+
+    if(!respon.ok){
+      throw new Error("Gagal memuat promo");
+    }
+
+    const semua = await respon.json();
+
+    const promo = semua.filter(p =>
+      !p.tanggal_berakhir ||
+      new Date(p.tanggal_berakhir) > new Date()
+    );
+
+    daftar.replaceChildren();
+
+    if(!promo.length){
+      daftar.textContent = "Belum ada promo saat ini. Nantikan promo berikutnya ya kak! 🎀";
+      return;
+    }
+
+    const rupiah = n =>
+      "Rp" + Number(n).toLocaleString("id-ID");
+
+    promo.forEach(p => {
+      const kartu = document.createElement("div");
+      kartu.className = "kartuPromo";
+
+      if(p.gambar_promo){
+        const gambar = document.createElement("img");
+        gambar.src = p.gambar_promo;
+        gambar.alt = p.judul;
+        gambar.onerror = () => gambar.remove();
+        kartu.append(gambar);
+      }
+
+      const label = document.createElement("div");
+      label.className = "labelPromo";
+      label.textContent = "🎁 SPECIAL PROMO";
+
+      const judul = document.createElement("h3");
+      judul.textContent = p.judul;
+
+      const deskripsi = document.createElement("p");
+      deskripsi.textContent = p.deskripsi;
+
+      const normal = document.createElement("div");
+      normal.className = "hargaNormalPromo";
+      normal.textContent = p.harga_normal
+        ? rupiah(p.harga_normal) : "";
+
+      const harga = document.createElement("div");
+      harga.className = "hargaDiskonPromo";
+      harga.textContent = rupiah(p.harga_promo);
+
+      const hemat = document.createElement("p");
+      hemat.style.color = "#d54d9c";
+      hemat.textContent = p.harga_normal > p.harga_promo
+        ? "Hemat " + rupiah(p.harga_normal - p.harga_promo)
+        : "";
+
+      const berlaku = document.createElement("p");
+      berlaku.style.fontSize = "11px";
+      berlaku.textContent = p.tanggal_berakhir
+        ? "Berlaku sampai " + new Date(p.tanggal_berakhir).toLocaleString("id-ID", {
+          timeZone: "Asia/Jakarta",
+          dateStyle: "medium",
+          timeStyle: "short"
+        }) + " WIB"
+        : "";
+
+      const order = document.createElement("a");
+      order.className = "orderPromo";
+      order.textContent = "🛍️ Ambil Promo";
+      order.target = "_blank";
+      order.rel = "noopener noreferrer";
+
+      order.href = "https://wa.me/62895329351557?text=" +
+        encodeURIComponent(
+          "Halo kak, aku mau ambil promo ini.\n\n📲 " +
+          p.judul + "\n" + p.deskripsi +
+          "\n💰 " + rupiah(p.harga_promo) +
+          "\n\nMasih ada stoknya, kak?"
+        );
+
+      kartu.append(label, judul, deskripsi, normal,
+        harga, hemat, berlaku, order);
+
+      daftar.append(kartu);
+    });
+
+  } catch(e){
+    daftar.textContent = "Promo gagal dimuat. Coba lagi ya kak.";
+  }
 }
 </script>
 </body>
