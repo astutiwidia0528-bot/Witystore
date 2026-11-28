@@ -1044,5 +1044,83 @@ async function muatTestimoni() {
 }
 
 muatTestimoni();
-</script></body>
+</script>
+  <style>
+#wityWelcome {
+  border: 2px solid #efc5e9;
+  border-radius: 26px;
+  background: #fff5fc;
+  width: 85%;
+  max-width: 350px;
+  padding: 22px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #94649f;
+  font-family: 'Fredoka', sans-serif;
+  box-shadow: 0 10px 40px #b77ac966;
+}
+#wityWelcome[open] {
+  animation: wityMuncul .5s ease;
+}
+#wityWelcome::backdrop {
+  background: rgba(45,20,55,.45);
+  backdrop-filter: blur(3px);
+}
+@keyframes wityMuncul {
+  from {opacity: 0; transform: scale(.85);}
+  to {opacity: 1; transform: scale(1);}
+}
+</style>
+
+<dialog id="wityWelcome">
+
+<button onclick="document.getElementById('wityWelcome').close()" style="position:absolute;top:8px;right:10px;background:none;border:none;color:#b47cbd;font-size:24px;">×</button>
+
+<img src="banner-witystore.png" alt="Witystore" style="width:100%;border-radius:18px;margin-top:15px;">
+
+<h2 style="color:#b768ba;margin:12px 0 5px;">
+Welcome to Witystore! 🎀
+</h2>
+
+<p style="font-size:12px;">
+Your Favorite Premium App Store
+</p>
+
+<p style="font-size:14px;line-height:1.6;">
+Hai kak! Selamat datang di Witystore.
+Yuk, nikmati aplikasi premium dengan
+harga hemat dan full garansi!
+</p>
+
+<p style="font-size:10px;font-weight:bold;">
+AMAN • CEPAT • TERPERCAYA
+</p>
+
+<button onclick="wityMulai()" style="width:100%;padding:12px;border:none;border-radius:25px;background:linear-gradient(90deg,#e99acb,#b58ae6);color:white;font-size:15px;font-weight:bold;">
+🛍️ Mulai Belanja
+</button>
+
+<p onclick="document.getElementById('wityWelcome').close()" style="font-size:12px;cursor:pointer;">
+Nanti saja
+</p>
+
+</dialog>
+
+<script>
+setTimeout(function(){
+  if(!sessionStorage.getItem('wityWelcomeSeen')){
+    document.getElementById('wityWelcome').showModal();
+    sessionStorage.setItem('wityWelcomeSeen','1');
+  }
+},1000);
+
+function wityMulai(){
+  document.getElementById('wityWelcome').close();
+  const katalog = document.getElementById('katalog');
+  if(katalog){
+    katalog.scrollIntoView({behavior:'smooth'});
+  }
+}
+</script>
+</body>
 </html>
