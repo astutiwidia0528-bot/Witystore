@@ -267,6 +267,82 @@ header::before {
   width: 28px !important;
   height: 28px !important;
   flex-shrink: 0 !important;
+}#home {
+  font-family: 'Fredoka', sans-serif;
+  color: #8739aa;
+}
+
+#home h2 {
+  font-size: 20px;
+}
+
+#home p {
+  font-size: 13px;
+}
+
+.promoHome {
+  background: linear-gradient(135deg, #ffd5ec, #e6c9ff);
+  padding: 18px;
+  border-radius: 20px;
+  margin: 15px 0;
+}
+
+.promoHome h2 {
+  font-size: 24px !important;
+  margin: 10px 0;
+}
+
+.boxHome {
+  background: #fff8fd;
+  border-radius: 18px;
+  padding: 15px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.boxHome h3 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+
+.boxHome p {
+  margin: 6px 0;
+}.menuBawah {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #fff0fa;
+  border-top: 2px solid #e5baff;
+  border-radius: 20px 20px 0 0;
+  padding: 10px 4px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 15px #d9b5e880;
+  z-index: 9999;
+}
+
+.menuBawah button,
+.menuBawah a {
+  background: transparent;
+  border: none;
+  color: #873bb0;
+  font-size: 23px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menuBawah span {
+  display: block;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+body {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
 }
 </style>
 </head>
@@ -276,11 +352,41 @@ header::before {
   alt="WITYSTORE"
   style="width:100%;display:block;">
 </header>
-<main>
+<main><section id="home">
+  <h2>Hai, selamat datang! 🎀</h2>
+  <p>Aplikasi premium favoritmu dengan harga hemat.</p>
+
+  <div class="promoHome">
+    <b>✨ PROMO SPESIAL</b>
+    <h2>Netflix + GRATIS</h2>
+    <p>Bonus aplikasi pilihan 🎁</p>
+  </div>
+
+  <h2>Aplikasi Populer</h2>
+  <div id="aplikasiPopuler"></div>
+
+  <div class="boxHome">
+    <h3>Kenapa Witystore?</h3>
+    <p>🛡️ Full Garansi</p>
+    <p>💸 Harga Hemat</p>
+    <p>⚡ Proses Cepat</p>
+  </div>
+
+  <div class="boxHome">
+    <h3>Cara Order</h3>
+    <p>Pilih aplikasi → Pilih paket → Order WA</p>
+  </div>
+
+  <div class="boxHome">
+    <h3>Metode Pembayaran</h3>
+    <p>DANA • SeaBank • BRI</p>
+  </div>
+</section><section id="halamanKatalog" hidden>
 <h2>Katalog Produk ✨</h2>
 <input id="cari" placeholder="Cari aplikasi premium...">
 <div id="produk">Memuat produk...</div>
-<section id="testimoni" style="margin-top:30px;">
+</section>
+<section id="testimoni" hidden style="margin-top:30px;">
   <h2>💗 Testimoni Pelanggan</h2>
   <p style="color:#984da8;">
     Terima kasih sudah percaya Witystore 🎀
@@ -288,14 +394,32 @@ header::before {
   <div id="daftarTestimoni">
     Memuat testimoni...
   </div>
-</section></main>
+</section></main><nav class="menuBawah">
+  <button onclick="bukaHalaman('home')">
+    🏠<span>Home</span>
+  </button>
+  <button onclick="bukaHalaman('halamanKatalog')">
+    🛍️<span>Katalog</span>
+  </button>
+  <button onclick="bukaHalaman('testimoni')">
+    💗<span>Testimoni</span>
+  </button>
+  <a href="https://wa.me/62895329351557">
+    💬<span>Chat Admin</span>
+  </a>
+</nav>
 <footer>© Witystore | Aplikasi Premium</footer>
 <script>
 const url = "https://fbrvxonpoqvijrwhjmnt.supabase.co";
 const key = "sb_publishable_3xHe531NObIFctWC9L5ERg_hkarVUCy";
 let data = [];
 const katalog = document.getElementById("produk");
-
+function bukaHalaman(id) {
+  ["home", "halamanKatalog", "testimoni"].forEach(nama => {
+    document.getElementById(nama).hidden = nama !== id;
+  });
+  window.scrollTo(0, 0);
+}
 function tampilkan(){
   const cari = document.getElementById("cari").value.toLowerCase();
   katalog.replaceChildren();
