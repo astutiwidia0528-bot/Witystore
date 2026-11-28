@@ -714,13 +714,53 @@ body {
 <div id="produk">Memuat produk...</div>
 </section>
 <section id="testimoni" hidden style="margin-top:30px;">
-  <h2>💗 Testimoni Pelanggan</h2>
-  <p style="color:#984da8;">
+<div style="text-align:center;font-family:'Fredoka',sans-serif;">
+  <h2 style="color:#873bb0;font-size:23px;margin:8px 0;">
+    💗 Testimoni Pelanggan
+  </h2>
+  <p style="background:#f5d9f8;border-radius:20px;padding:7px;font-size:12px;color:#873bb0;margin:6px 0 15px;">
     Terima kasih sudah percaya Witystore 🎀
   </p>
+</div>
   <div id="daftarTestimoni">
     Memuat testimoni...
-  </div>
+  </div><style>
+#daftarTestimoni {
+  display: block !important;
+  column-count: 2;
+  column-gap: 10px;
+  overflow: visible !important;
+}
+
+#daftarTestimoni > div {
+  display: inline-block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+  break-inside: avoid;
+  height: auto !important;
+  margin: 0 0 10px !important;
+  padding: 10px !important;
+  background: #fff5fc !important;
+  border: 1px solid #dfb3f5 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 3px 8px #d9b2e780;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 12px;
+}
+
+#daftarTestimoni img {
+  width: 100% !important;
+  height: 100px !important;
+  object-fit: cover !important;
+  border-radius: 10px !important;
+}
+
+#daftarTestimoni p {
+  margin: 5px 0 !important;
+  font-size: 12px !important;
+}
+</style>
 </section></main><nav class="menuBawah">
   <button onclick="bukaHalaman('home')">
     🏠<span>Home</span>
